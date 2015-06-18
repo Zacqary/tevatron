@@ -1,0 +1,11 @@
+{
+  "name": "tevatron",
+  "version": "1.0.0",
+  "description": "Lightweight custom elements library",
+  "main": "tevatron.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zacqary Adam Xeper",
+  "license": "MIT"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "tevatron",
+  "main": "tevatron.js",
+  "version": "1.0.0",
+  "authors": [
+    "Zacqary Adam Xeper <zxeper@fastcompany.com>"
+  ],
+  "description": "Lightweight custom elements library",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
