@@ -28,14 +28,11 @@ You can include multiple components in a single HTML import file as long as they
 </template>
 ```
 
-**TODO:** Tevatron does not currently bundle any `<script>` tags included in your HTML import file. This may be a helpful feature to add later in order to keep the Tevatron workflow close to the web component spec.
-
 #### `<style>` Tags
 Tevatron does support `<style>` tags inside a `<template>`, but it will **not** behave like a Shadow DOM `<style>` tag. Its innerHTML will be inserted into a `<style id="tevatron-styles">` tag prepended to your `<head>`. Keep that limitation in mind. This means you will need to use very specific selectors, because your styles will not be encapsulated. Instead of using `p{}`, use `my-element p{}`
 
-
 ### Write your Javascript
-Write a script to register your custom element, with the following caveats:
+Your element's Javascript can be written in an inline `<script>` tag, or linked to with a `<script src>` tag.
 
 Instead of declaring your element like this:
 ```
@@ -85,15 +82,13 @@ The `/* tevatron... */` insertion point will be replaced with `template: {html: 
 2. Calls your `function()` with your element bound to `this`. This is, for all intents and purposes, your element's `createdCallback`.
 
 ### Smash them together!
-First, run `npm link` from the `tevatron` root directory to create a symlink to the command line tool, and run `npm install` to make sure dependencies are installed.
+Use the [Tevatron CLI](https://github.com/fastcompany/tevatron-cli) to smash your components into easy-to-import Javascript files:
 
-Use this syntax:
-`tevatron -h yourHTMLFile.html -j yourJSFile.js -o outputFile.js`
+`tevatron -s /your_components_directory -t /your_output_directory`
 
-This will smash your HTML file into your JS file and output it as `outputFile.js`.
+or concatenate them:
 
-#### Rust Builder (Experimental)
-`tevatron-build-rs` contains a version of the Tevatron builder written in Rust. Running `cargo build --release` on this crate will compile a binary that executes approximately 4 times faster than the node-based builder. (The debug build doesn't come with any performance improvements)
+`tevatron -s /your_components_directory -t output_filename -c`
 
 ### Include
 Tevatron elements require these two dependencies:
@@ -105,7 +100,7 @@ Tevatron elements require these two dependencies:
 - `document-register-element.js` is a polyfill for browsers that don't support custom elements yet. It's only 6 kb minified and more cross-browser compatible than the official `webcomponents.js` polyfill.
 - `tevatron.js` is the Tevatron helper library which declares all the `Tevatron` methods.
 
-After you've included those, include your `outputFile.js`
+After you've included those, include your `output_filename.js`
 
 ## API
 Every Tevatron element will include:
