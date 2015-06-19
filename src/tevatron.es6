@@ -61,11 +61,11 @@ export default (args) => {
 		var styleString = null;
 		if (Array.isArray(styleTags)){
 			styleString = '';
-			styleTags.forEach((tag) => {
+			for (let tag of styleTags){
 				var thisStyle = tag;
 				thisStyle = thisStyle.replace(/<\/?style>/g,'');
 				styleString += thisStyle;
-			});
+			}
 		}
 
 		obj.html = htmlString;
@@ -172,7 +172,7 @@ export default (args) => {
 			var selectIndex = [];
 
 			if (selectTags){
-				selectTags.forEach((tag) => {
+				for (let tag of selectTags) {
 					// Grab the selection query
 					var query = new RegExp(/<content select=["'](.+?)["']><\/content>/g).exec(tag);
 					// If there's no query, then select everything
@@ -186,8 +186,8 @@ export default (args) => {
 						name: query,
 						insertionPoint: tag
 					});
-				});
-				selectIndex.forEach((index) => {
+				}
+				for (let index of selectIndex) {
 					var selectedHTML = "";
 					// If there's no query, then select everything
 					if (index.name === "***"){
@@ -201,7 +201,7 @@ export default (args) => {
 						}
 						newHTML = newHTML.replace(index.insertionPoint,selectedHTML);
 					}
-				});
+				}
 			}
 
 			// Replace the element's innerHTML with newHTML
