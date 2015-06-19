@@ -1,3 +1,11 @@
+/*!
+ * Tevatron v0.1.0
+ * by Fast Company
+ *
+ * Copyright 2015 Mansueto Ventures, LLC and other contributors
+ * Released under the MIT license
+ *
+ */
 (function (root, factory) {
   if (typeof exports === 'object') {
     // CommonJS
