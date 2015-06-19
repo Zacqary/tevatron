@@ -6,7 +6,7 @@
  * Released under the MIT license
  *
  */
-export default (args) => {
+export default args => {
 	if (args){
 		// Create a prototype
 		var newPrototype;
@@ -51,7 +51,7 @@ export default (args) => {
 	}
 
 	// Convert a template node into html/css objects
-	function templateNodeToTemplateObj(node){
+	var templateNodeToTemplateObj = node => {
 		var obj = {};
 		var htmlString = node.innerHTML;
 
@@ -72,10 +72,10 @@ export default (args) => {
 		obj.css = styleString;
 
 		return obj;
-	}
+	};
 
 	// Create the element prototype
-	function createElementPrototype(template, createdCallback, extendsElement){
+	var createElementPrototype = (template, createdCallback, extendsElement) => {
 		var baseElement = extendsElement || HTMLElement;
 		var ElementPrototype = Object.create(baseElement.prototype);
 		if (typeof template === 'function'){
@@ -126,10 +126,10 @@ export default (args) => {
 
 		ElementPrototype.template = template;
 		return ElementPrototype;
-	}
+	};
 
 	// Register a custom element with the document
-	function registerElement(elementPrototype, name, extendsElement){
+	var registerElement = (elementPrototype, name, extendsElement) => {
 		// Make sure the tevatron element registry exists
 		if (!this.tevatronElements) {
 			this.tevatronElements = {};
@@ -148,11 +148,11 @@ export default (args) => {
 				});
 			}
 		}
-	}
+	};
 
 	// Register a custom element's internal style tags by placing them
 	// at the top of the <head>
-	function registerStyle(styleString, name){
+	var registerStyle = (styleString, name) => {
 		var styleTag = document.getElementById('#tevatron-styles-'+name);
 		if (styleTag === null){
 			styleTag = document.createElement('style');
@@ -160,10 +160,10 @@ export default (args) => {
 			document.head.appendChild(styleTag);
 		}
 		styleTag.innerHTML += styleString;
-	}
+	};
 	
 	// Resolve a custom element's template by imitating Shadow DOM insertion points
-	function collideHTML(template, element){
+	var collideHTML = (template, element) => {
 		if (element.getAttribute('data-tevatron') !== 'collided'){
 			var newHTML = template;
 
@@ -209,5 +209,5 @@ export default (args) => {
 			element.innerHTML = newHTML;
 			element.setAttribute('data-tevatron', 'collided');
 		}
-	}
+	};
 };
