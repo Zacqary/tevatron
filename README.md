@@ -3,13 +3,18 @@
 Tevatron is two things:
 
 - A helper libary that eliminates some boilerplate code from declaring custom elements (but otherwise uses vanilla syntax inspired by Mozilla Brick)
-- A build script that smashes together an `html` template into a custom element's `js` file, to get around the problems with HTML imports
+- A [build script](https://github.com/fastcompany/tevatron-cli) that smashes together an `html` template into a custom element's `js` file, to get around the problems with HTML imports
 
 With Tevatron, you can write a web component using a standards-compliant workflow, and deploy it in a cross-browser compatible way using only Javascript. No HTML imports or Shadow DOM required.
 
 Tevatron allows you to deploy web components using only the technologies that are absolutely ready for production today.
 
-## Building
+## Install
+`npm install tevatron`
+or
+`bower install tevatron`
+
+## Use
 
 ### Write your HTML
 To build a web component with Tevatron, write an HTML import file as you normally would, including the component's `<template>` tag, and `<content>` wherever you want an insertion point. See Mozilla Brick components for a style guide.
