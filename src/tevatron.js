@@ -18,50 +18,50 @@
     root.Tevatron = factory();
   }
 }(this, function(){
-	return function(args){
+	return function(prototype){
 
-		if (args){
+		if (prototype){
 			// Create a prototype
 			var newPrototype;
 			// Handle any element extensions
-			var extendsElement = args.extends || '';
+			var extendsElement = prototype.extends || '';
 			extendsElement = extendsElement.toUpperCase();
 
 			// Check to see if the template argument is a Template node, or if it's
 			// an object from the builder script
 			/* global HTMLTemplateElement */
-			if (args.template && args.template instanceof HTMLTemplateElement){
-				args.template = templateNodeToTemplateObj(args.template);
+			if (prototype.template && prototype.template instanceof HTMLTemplateElement){
+				prototype.template = templateNodeToTemplateObj(prototype.template);
 			}
 
-			// By the time this element is registered, args.extends should only ever refer to
+			// By the time this element is registered, prototype.extends should only ever refer to
 			// a non-custom element
 			if (this.tevatronElements && this.tevatronElements.hasOwnProperty(extendsElement)){
 				// If this element is extending a Tevatron element, grab that element's prototype
-				// and clear args.extends
-				newPrototype = createElementPrototype(args.template, args.createdCallback, this.tevatronElements[extendsElement]);
-				args.extends = '';
+				// and clear prototype.extends
+				newPrototype = createElementPrototype(prototype.template, prototype.createdCallback, this.tevatronElements[extendsElement]);
+				prototype.extends = '';
 			} else if (extendsElement.indexOf('-') > -1){
 				// If this element is trying to extend a custom element not registered with
 				// Tevatron, don't let it
-				args.extends = '';
+				prototype.extends = '';
 			} else {
-				newPrototype = createElementPrototype(args.template, args.createdCallback);
+				newPrototype = createElementPrototype(prototype.template, prototype.createdCallback);
 			}
 
 			// If there's any CSS in the template, register it
-			if (args.template && typeof args.template.css === 'string'){
-	  			registerStyle(args.template.css, args.name);
+			if (prototype.template && typeof prototype.template.css === 'string'){
+	  			registerStyle(prototype.template.css, prototype.name);
 			}
-			// Add all other args into the prototype
-			for (var i in args){
+			// Add all other properties into the prototype
+			for (var i in prototype){
 				if (i !== 'createdCallback'){
-					newPrototype[i] = args[i];
+					newPrototype[i] = prototype[i];
 				}
 			}
 
 			// Register the prototype as a custom element
-			registerElement(newPrototype, args.name, args.extends);
+			registerElement(newPrototype, prototype.name, prototype.extends);
 		}
 
 		// Convert a template node into html/css objects
