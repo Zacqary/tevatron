@@ -153,10 +153,10 @@ export default prototype => {
 	// Register a custom element's internal style tags by placing them
 	// at the top of the <head>
 	var registerStyle = (styleString, name) => {
-		var styleTag = document.getElementById('#tevatron-styles-'+name);
+		var styleTag = document.getElementById(`#tevatron-styles-${name}`);
 		if (styleTag === null){
 			styleTag = document.createElement('style');
-			styleTag.id = '#tevatron-styles-'+name;
+			styleTag.id = `#tevatron-styles-${name}`;
 			document.head.appendChild(styleTag);
 		}
 		styleTag.innerHTML += styleString;
