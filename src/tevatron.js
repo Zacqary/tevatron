@@ -1,11 +1,3 @@
-/*!
- * Tevatron v1.0.0
- * by Fast Company
- *
- * Copyright 2015 Mansueto Ventures, LLC and other contributors
- * Released under the MIT license
- *
- */
 (function (root, factory) {
   if (typeof exports === 'object') {
     // CommonJS
@@ -36,10 +28,10 @@
 
 			// By the time this element is registered, args.extends should only ever refer to
 			// a non-custom element
-			if (window.tevatronElements && window.tevatronElements.hasOwnProperty(extendsElement)){
+			if (this.tevatronElements && this.tevatronElements.hasOwnProperty(extendsElement)){
 				// If this element is extending a Tevatron element, grab that element's prototype
 				// and clear args.extends
-				newPrototype = createElementPrototype(args.template, args.createdCallback, window.tevatronElements[extendsElement]);
+				newPrototype = createElementPrototype(args.template, args.createdCallback, this.tevatronElements[extendsElement]);
 				args.extends = '';
 			} else if (extendsElement.indexOf('-') > -1){
 				// If this element is trying to extend a custom element not registered with
@@ -75,11 +67,11 @@
 			var styleString = null;
 			if (Array.isArray(styleTags)){
 				styleString = '';
-				for (var j in styleTags){
-					var thisStyle = styleTags[j];
+				styleTags.forEach(function(tag){
+					var thisStyle = tag;
 					thisStyle = thisStyle.replace(/<\/?style>/g,'');
 					styleString += thisStyle;
-				}
+				});
 			}
 
 			obj.html = htmlString;
@@ -145,11 +137,11 @@
 		// Register a custom element with the document
 		function registerElement(elementPrototype, name, extendsElement){
 			// Make sure the tevatron element registry exists
-			if (!window.tevatronElements) {
-				window.tevatronElements = {};
+			if (!this.tevatronElements) {
+				this.tevatronElements = {};
 			}
 			// If this element isn't already registered, register it
-			if (!window.tevatronElements[name.toUpperCase()]){
+			if (!this.tevatronElements[name.toUpperCase()]){
 				// If this element is extending a non-custom element
 				if (typeof extendsElement === 'string' && extendsElement !== '') {
 					document.registerElement(name.toUpperCase(), {
@@ -157,7 +149,7 @@
 						extends: extendsElement
 					});
 				} else {
-					window.tevatronElements[name.toUpperCase()] = document.registerElement(name.toUpperCase(), {
+					this.tevatronElements[name.toUpperCase()] = document.registerElement(name.toUpperCase(), {
 						prototype: elementPrototype
 					});
 				}
