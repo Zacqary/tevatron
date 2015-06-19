@@ -53,11 +53,9 @@
 			if (prototype.template && typeof prototype.template.css === 'string'){
 	  			registerStyle(prototype.template.css, prototype.name);
 			}
-			// Add all other properties into the prototype
+			// Add all properties into the prototype
 			for (var i in prototype){
-				if (i !== 'createdCallback'){
-					newPrototype[i] = prototype[i];
-				}
+				newPrototype[i] = prototype[i];
 			}
 
 			// Register the prototype as a custom element
@@ -92,16 +90,27 @@
 		function createElementPrototype(template, createdCallback, extendsElement){
 			var baseElement = extendsElement || HTMLElement;
 			var ElementPrototype = Object.create(baseElement.prototype);
+
+			// Add an immutable property to the ElementPrototype
+			function addConstant(name, value){
+				Object.defineProperty(ElementPrototype, name, {
+					get: function(){
+						return value;
+					},
+					enumerable: 'true'
+				});
+			}
+
 			if (typeof template === 'function'){
 				createdCallback = template;
 			}
 			if (typeof createdCallback === 'function'){
-				ElementPrototype.canonicalCreatedCallback = createdCallback;
+				addConstant('canonicalCreatedCallback', createdCallback);
 			}
 
 			// Set this element's createdCallback to resolve the element's template,
 			// and then call its canonical createdCallback
-			ElementPrototype.createdCallback = function(){
+			addConstant('createdCallback', function(){
 				// Collide this element's template, or, if it has no template,
 				// its base element's template
 				if (template && typeof template.html === 'string'){
@@ -117,25 +126,25 @@
 		  		} else if (extendsElement && extendsElement.prototype.canonicalCreatedCallback){
 		  			callback = extendsElement.prototype.canonicalCreatedCallback.call(this);
 		  		}
-			};
+			});
 
 			// Reset this element's innerHTML and recollide it with its template
-			ElementPrototype.resetInnerHTML = function(newHTML){
+			addConstant('resetInnerHTML', function(newHTML){
 				this.innerHTML = newHTML;
 				if (this.template && typeof this.template.html === 'string'){
 		  			collideHTML(this.template.html, this);
 				}
-			};
+			});
 
 			// If this element extends another element, add these methods
 			// to refer to the base element's original functions and properties
 			if (extendsElement){
-				ElementPrototype.callOriginalFunction = function(method){
+				addConstant('callOriginalFunction', function(method){
 					baseElement.prototype[method].call(this);
-				};
-				ElementPrototype.getOriginalProperty = function(property){
+				});
+				addConstant('getOriginalProperty', function(property){
 					return baseElement.prototype[property];
-				};
+				});
 			}
 
 			ElementPrototype.template = template;
