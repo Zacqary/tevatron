@@ -2,10 +2,17 @@
   "name": "tevatron",
   "version": "1.0.0",
   "description": "Lightweight custom elements library",
-  "main": "tevatron.js",
+  "main": "src/tevatron.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Zacqary Adam Xeper",
-  "license": "MIT"
+  "author": "Fast Company <dev@fastcompany.com>",
+  "contributors": [
+  	{
+  		"name": "Zacqary Adam Xeper",
+  		"email": "zxeper@fastcompany.com"
+  	}
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/fastcompany/tevatron.git"
 }

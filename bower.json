@@ -1,8 +1,9 @@
 {
   "name": "tevatron",
-  "main": "tevatron.js",
+  "main": "src/tevatron.js",
   "version": "1.0.0",
   "authors": [
+    "Fast Company <dev@fastcompany.com>",
     "Zacqary Adam Xeper <zxeper@fastcompany.com>"
   ],
   "description": "Lightweight custom elements library",
