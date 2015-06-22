@@ -11,23 +11,198 @@
 		<script type="text/javascript" src="jasmine/lib/jasmine-2.3.4/jasmine-html.js"></script>
 		<script type="text/javascript" src="jasmine/lib/jasmine-2.3.4/boot.js"></script>
 
-		<script type="text/javascript" src="../dist/document-register-element.js"></script>
+		<script type="text/javascript" src="lib/document-register-element.js"></script>
 		<script type="text/javascript" src="../dist/tevatron.min.js"></script>
+		<script type="text/javascript" src="component-dist/components.min.js"></script>
 
 		<script>
 			describe("A basic templated element", function(){
+				beforeAll(function(done){
+					window.requestAnimationFrame(done);
+				});
 				it("should insert its children into its template's <content> tags", function(){
-
+					var expected = document.getElementById('expected-test-one').innerHTML.replace(/\s/g,'');
+					var result = document.querySelector('test-one').innerHTML.replace(/\s/g,'');
+					expect(result).toEqual(expected);
+				});
+				it("should also do this using inline <template> tags", function(){
+					var expected = document.getElementById('expected-test-two').innerHTML.replace(/\s/g,'');
+					var result = document.querySelector('test-two').innerHTML.replace(/\s/g,'');
+					expect(result).toEqual(expected);
+				});
+				it("should apply internal <style> tags", function(){
+					var expected = document.getElementById('expected-test-one');
+					var result = document.querySelector('test-one');
+					expect(window.getComputedStyle(result.querySelector('.fourth')).fontWeight)
+						.toEqual(window.getComputedStyle(expected.querySelector('.fourth')).fontWeight);
+				});
+				it("should insert internal <style> tags at the top of the cascade", function(){
+					var expected = document.getElementById('expected-test-one');
+					var result = document.querySelector('test-one');
+					expect(window.getComputedStyle(result.querySelectorAll('p')[2]).color)
+						.toEqual(window.getComputedStyle(expected.querySelectorAll('p')[2]).color);		
 				});
 			});
-		</script>
+			
+			describe("An extended element based on a custom element", function(){
+				it("should have the same template as its base", function(){
+					var expected = document.getElementById('expected-test-three').innerHTML.replace(/\s/g,'');
+					var result = document.querySelector('test-three').innerHTML.replace(/\s/g,'');
+					expect(result).toEqual(expected);	
+				});
+				it("should inherit its createdCallback from its base", function(){
+					var expected = window.getComputedStyle(document.getElementById('expected-test-three')).color;
+					var result = window.getComputedStyle(document.querySelector('test-three')).color;
+					expect(result).toEqual(expected);
+				});
+				it("should preseve its base's original functions when overridden", function(){
+					expect(document.querySelector('test-three').testFunction1()).toEqual(10);
+				});
+				it("should preseve its base's original properties when overridden", function(){
+					expect(document.querySelector('test-three').testProperty1).toEqual(12);
+				});
+			});
+			
+			describe("An element that's recollided after being inserted", function(){
+				beforeEach(function(done){
+					setTimeout(done, 5);
+				});
+				it("should apply its existing template to its reset innerHTML", function(){
+					var expected = document.getElementById('expected-test-four').innerHTML.replace(/\s/g,'');
+					var result = document.querySelector('test-four').innerHTML.replace(/\s/g,'');
+					expect(result).toEqual(expected);	
+				});
+			});
 
+		</script>
+		
+		<style>
+			#tests{
+				height: 66vh;
+				overflow: auto;
+			}
+			.jasmine_html_reporter{
+				height:33vh;
+				overflow: auto;
+			}
+			
+			.test, .test-section{
+				float:left;
+				display: block;
+				margin-right: 20px;
+			}
+			h1, h2{
+				clear: both;
+			}
+			
+			#expected-test-one .fourth{
+				font-weight: bold;
+			}
+			p:nth-of-type(3), test-one p:nth-of-type(3){
+	            color: blue;
+	        }
+			
+			#expected-test-three{
+				color: red;
+			}
+		</style>
 	</head>
 	<body>
-		<test-one>
-			<p id="second">I should only appear second in the element</p>
-			<span class="fourth">I should appear fourth in the element</span>
-			<h2>I should never appear at all</h2>
-		</test-one>
+		<div id="tests">
+			<h1>Basic Templating</h1>
+			
+			<div class='test'>	
+				<h2>Test 1</h2>
+				<section class='test-section'>
+					<h3>Expected</h3>
+					<div id="expected-test-one">
+						<p>I should appear first in the element</p>
+						<p id="second">I should only appear second in the element</p>
+						<p>I should appear third in the element</p>
+						<p><span class="fourth">I should appear fourth in the element</span></p>
+						<p>I should appear fifth in the element</p>
+					</div>
+				</section>
+				<section class='test-section'>
+					<h3>Result</h3>
+					<test-one>
+						<p id="second">I should only appear second in the element</p>
+						<span class="fourth">I should appear fourth in the element</span>
+						<h2>I should never appear at all</h2>
+					</test-one>
+				</section>
+			</div>
+			
+			<div class='test'>
+				<h2>Test 2</h2>
+				<section class='test-section'>
+					<h3>Expected</h3>
+					<div id="expected-test-two">
+						<p>I should appear first in the element</p>
+						<p id="second">I should only appear second in the element</p>
+						<p>I should appear third in the element</p>
+						<p><span class="fourth">I should appear fourth in the element</span></p>
+						<p>I should appear fifth in the element</p>
+					</div>
+				</section>
+				<section class='test-section'>
+					<h3>Result</h3>
+					<test-two>
+						<p id="second">I should only appear second in the element</p>
+						<span class="fourth">I should appear fourth in the element</span>
+						<h2>I should never appear at all</h2>
+					</test-one>
+				</section>
+				<template id="test-two-template">
+				    <p>I should appear first in the element</p>
+				    <content select="p"></content>
+				    <p>I should appear third in the element</p>
+				    <content select="#second"></content>
+				    <p><content select=".fourth"></content></p>
+				    <p>I should appear fifth in the element</p>
+				</template>
+			</div>
+			
+			<h1>Extended Custom Element</h1>
+			<h2>Test 3</h2>
+			<div class='test'>
+				<section class='test-section'>
+					<h3>Expected</h3>
+					<div id='expected-test-three'>
+						<span class='hello'>Hello, world</span>
+					</div>
+				</section>
+				<section class='test-section'>
+					<h3>Result</h3>
+					<test-three></test-three>
+				</section>
+			</div>
+			
+			<h1>Recollided Element</h1>
+			<h2>Test 4</h2>
+			<div class='test'>
+				<section class='test-section'>
+					<h3>Expected</h3>
+					<div id='expected-test-four'>
+						<h4>This should appear first</h4>
+						<p>This should appear second</p>
+						<p class='third'>This should appear third</p>
+					</div>
+				</section>
+				<section class='test-section'>
+					<h3>Result</h3>
+					<test-four>
+						<h4>This should appear first</h4>
+					</test-four>
+				</section>
+			</div>
+			
+		</div>
+		<script>
+			Tevatron({
+				name: 'test-two',
+				template: document.getElementById('test-two-template')
+			});
+		</script>
 	</body>
 </html>
