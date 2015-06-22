@@ -132,7 +132,7 @@
 			addConstant('resetInnerHTML', function(newHTML){
 				this.innerHTML = newHTML;
 				if (this.template && typeof this.template.html === 'string'){
-		  			collideHTML(this.template.html, this);
+		  			collideHTML(this.template.html, this, true);
 				}
 			});
 
@@ -140,7 +140,7 @@
 			// to refer to the base element's original functions and properties
 			if (extendsElement){
 				addConstant('callOriginalFunction', function(method){
-					baseElement.prototype[method].call(this);
+					return baseElement.prototype[method].call(this);
 				});
 				addConstant('getOriginalProperty', function(property){
 					return baseElement.prototype[property];
@@ -186,8 +186,12 @@
 		}
 		
 		// Resolve a custom element's template by imitating Shadow DOM insertion points
-		function collideHTML(template, element){
-			if (element.getAttribute('data-tevatron') !== 'collided'){
+		function collideHTML(template, element, force){
+			var uncollided = element.getAttribute('data-tevatron') !== 'collided';
+			if (uncollided){
+				element.originalInnerHTML = element.innerHTML;
+			}
+			if (uncollided || force){
 				var newHTML = template;
 
 				// Find all the insertion points
@@ -228,7 +232,6 @@
 				}
 
 				// Replace the element's innerHTML with newHTML
-				element.originalInnerHTML = element.innerHTML;
 				element.innerHTML = newHTML;
 				element.setAttribute('data-tevatron', 'collided');
 			}
