@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset='utf-8'>
+		<title>Tevatron Unit Tests</title>
+
+		<link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine-2.3.4/jasmine_favicon.png">
+		<link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-2.3.4/jasmine.css">
+
+		<script type="text/javascript" src="jasmine/lib/jasmine-2.3.4/jasmine.js"></script>
+		<script type="text/javascript" src="jasmine/lib/jasmine-2.3.4/jasmine-html.js"></script>
+		<script type="text/javascript" src="jasmine/lib/jasmine-2.3.4/boot.js"></script>
+
+		<script type="text/javascript" src="../dist/document-register-element.js"></script>
+		<script type="text/javascript" src="../dist/tevatron.min.js"></script>
+
+		<script>
+			describe("A basic templated element", function(){
+				it("should insert its children into its template's <content> tags", function(){
+
+				});
+			});
+		</script>
+
+	</head>
+	<body>
+		<test-one>
+			<p id="second">I should only appear second in the element</p>
+			<span class="fourth">I should appear fourth in the element</span>
+			<h2>I should never appear at all</h2>
+		</test-one>
+	</body>
+</html>
