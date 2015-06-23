@@ -5,7 +5,7 @@
     Tevatron({
         name: 'test-one',
         template: {html: '<p>I should appear first in the element</p><content select="p"></content><p>I should appear third in the element</p><content select="#second"></content><p><content select=".fourth"></content></p><p>I should appear fifth in the element</p>', css: 'test-one .fourth{font-weight: bold;}test-one p:nth-of-type(3){color: red;}'},
-    })
+    });
 
 // =========================
 // component-src/components.html-inline
@@ -31,7 +31,7 @@
         testFunction1: function(){
             return this.callOriginalFunction('testFunction1') + 2;
         }
-    })
+    });
 
 // =========================
 // component-src/components.html-inline
@@ -42,8 +42,8 @@
         template: {html: '<content select="h4"></content><p>This should appear second</p><content select=".third"></content>'},
         attachedCallback: function(){
             setTimeout(function(){
-                //this.resetInnerHTML(this.originalInnerHTML + "<p class='third'>This should appear third</p>");
-            }.bind(this), 1000);
+                this.resetInnerHTML(this.originalInnerHTML + "<p class='third'>This should appear third</p>");
+            }.bind(this), 5);
         }
-    })
+    });
 

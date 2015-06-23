@@ -18,7 +18,7 @@
     Tevatron({
         name: 'test-one',
         /* tevatron template: #test-one-template */
-    })
+    });
 </script>
 
 <template id="test-three-template">
@@ -45,7 +45,7 @@
         testFunction1: function(){
             return this.callOriginalFunction('testFunction1') + 2;
         }
-    })
+    });
 </script>
 
 <template id="test-four-template">
@@ -62,5 +62,5 @@
                 this.resetInnerHTML(this.originalInnerHTML + "<p class='third'>This should appear third</p>");
             }.bind(this), 5);
         }
-    })
+    });
 </script>

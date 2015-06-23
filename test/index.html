@@ -21,13 +21,13 @@
 					window.requestAnimationFrame(done);
 				});
 				it("should insert its children into its template's <content> tags", function(){
-					var expected = document.getElementById('expected-test-one').innerHTML.replace(/\s/g,'');
-					var result = document.querySelector('test-one').innerHTML.replace(/\s/g,'');
+					var expected = document.getElementById('expected-test-one').innerHTML.replace(/\n(\s+)?/g, '');
+					var result = document.querySelector('test-one').innerHTML.replace(/\n(\s+)?/g, '');
 					expect(result).toEqual(expected);
 				});
 				it("should also do this using inline <template> tags", function(){
-					var expected = document.getElementById('expected-test-two').innerHTML.replace(/\s/g,'');
-					var result = document.querySelector('test-two').innerHTML.replace(/\s/g,'');
+					var expected = document.getElementById('expected-test-two').innerHTML.replace(/\n(\s+)?/g, '');
+					var result = document.querySelector('test-two').innerHTML.replace(/\n(\s+)?/g, '');
 					expect(result).toEqual(expected);
 				});
 				it("should apply internal <style> tags", function(){
@@ -46,8 +46,8 @@
 			
 			describe("An extended element based on a custom element", function(){
 				it("should have the same template as its base", function(){
-					var expected = document.getElementById('expected-test-three').innerHTML.replace(/\s/g,'');
-					var result = document.querySelector('test-three').innerHTML.replace(/\s/g,'');
+					var expected = document.getElementById('expected-test-three').innerHTML.replace(/\n(\s+)?/g, '');
+					var result = document.querySelector('test-three').innerHTML.replace(/\n(\s+)?/g, '');
 					expect(result).toEqual(expected);	
 				});
 				it("should inherit its createdCallback from its base", function(){
@@ -68,8 +68,8 @@
 					setTimeout(done, 5);
 				});
 				it("should apply its existing template to its reset innerHTML", function(){
-					var expected = document.getElementById('expected-test-four').innerHTML.replace(/\s/g,'');
-					var result = document.querySelector('test-four').innerHTML.replace(/\s/g,'');
+					var expected = document.getElementById('expected-test-four').innerHTML.replace(/\n(\s+)?/g, '');
+					var result = document.querySelector('test-four').innerHTML.replace(/\n(\s+)?/g, '');
 					expect(result).toEqual(expected);	
 				});
 			});
