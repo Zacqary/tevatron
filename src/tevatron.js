@@ -1,11 +1,12 @@
 /*!
- * Tevatron v0.1.1
+ * Tevatron v0.1.2
  * by Fast Company
  *
  * Copyright 2015 Mansueto Ventures, LLC and other contributors
  * Released under the MIT license
  *
  */
+/* globals define */
 (function (root, factory) {
   if (typeof exports === 'object') {
     // CommonJS
