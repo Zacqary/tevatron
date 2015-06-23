@@ -13,7 +13,7 @@
 // === script tag 1 ===
     Tevatron({
         name: 'test-three-base',
-        template: {html: '<span class="hello">Hello, world</span>    '},
+        template: {html: '<span class="hello">Hello, world</span>'},
         createdCallback: function(){
             this.style.color = 'red';
         },
