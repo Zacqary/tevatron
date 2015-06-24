@@ -1,10 +1,13 @@
 {
   "name": "tevatron",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "description": "Lightweight custom elements library",
-  "main": "src/tevatron.js",
+  "main": "dist/tevatron.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify src/tevatron.es6 -o dist/tevatron.js -t babelify -s Tevatron",
+    "postbuild": "uglifyjs dist/tevatron.js -m -o dist/tevatron.min.js --preamble \"$(cat src/minified-preamble.txt)\" --source-map dist/tevatron.js.map --source-map-root dist/tevatron.js ",
+    "release": "node bump"
   },
   "author": "Fast Company <dev@fastcompany.com>",
   "contributors": [
@@ -14,5 +17,13 @@
     }
   ],
   "license": "MIT",
-  "repository": "https://github.com/fastcompany/tevatron.git"
+  "repository": "https://github.com/fastcompany/tevatron.git",
+  "devDependencies": {
+    "babel-eslint": "^3.1.18",
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.4",
+    "eslint": "^0.23.0",
+    "semver": "^4.3.6",
+    "uglifyjs": "^2.4.10"
+  }
 }
