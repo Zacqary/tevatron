@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "browserify src/tevatron.es6 -o dist/tevatron.js -t babelify -s Tevatron",
-    "postbuild": "uglifyjs dist/tevatron.js -m -o dist/tevatron.min.js --preamble \"$(cat src/minified-preamble.txt)\" --source-map dist/tevatron.map.js --source-map-root dist/tevatron.js ",
+    "postbuild": "uglifyjs dist/tevatron.js -m -o dist/tevatron.min.js --preamble \"$(cat src/minified-preamble.txt)\" --source-map dist/tevatron.js.map --source-map-root dist/tevatron.js ",
     "release": "node bump"
   },
   "author": "Fast Company <dev@fastcompany.com>",

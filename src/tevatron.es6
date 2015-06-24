@@ -1,5 +1,5 @@
 /*!
- * Tevatron v0.1.3
+ * Tevatron v0.1.4
  * by Fast Company
  *
  * Copyright 2015 Mansueto Ventures, LLC and other contributors
