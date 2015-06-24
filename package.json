@@ -4,7 +4,8 @@
   "description": "Lightweight custom elements library",
   "main": "src/tevatron.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify src/tevatron.es6 -o dist/tevatron.js -t babelify -s Tevatron"
   },
   "author": "Fast Company <dev@fastcompany.com>",
   "contributors": [
@@ -14,5 +15,11 @@
     }
   ],
   "license": "MIT",
-  "repository": "https://github.com/fastcompany/tevatron.git"
+  "repository": "https://github.com/fastcompany/tevatron.git",
+  "devDependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.4",
+    "semver": "^4.3.6",
+    "uglifyjs": "^2.4.10"
+  }
 }
