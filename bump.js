@@ -12,7 +12,7 @@ var colors = require('colors');
 
 colors.setTheme({
   error: ['white', 'bold', 'bgRed'],
-  warn: ['white', 'bold', 'bgYellow']
+  warn: ['white', 'bold', 'bgBlue']
 });
 exec('[[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]] && echo "*"', function(err, stdout){
 	if (stdout === "*\n"){
@@ -32,7 +32,7 @@ exec('[[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]] && echo "*"', 
 		if (err) throwError(err);
 		console.log("About to bump version number from "+oldVersion+" to " +newVersion);
 		var branch = stdout;
-		if (branch === 'master'){
+		if (branch === 'master\n'){
 			console.log('You are on the MASTER branch. Pushing this change will PUBLISH a new version.'.warn);
 		}
 		yesno.ask('Commit and push this change to git repo? Y/n', true, function(ok){
