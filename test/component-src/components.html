@@ -1,0 +1,66 @@
+<template id="test-one-template">
+    <style>
+        test-one .fourth{
+            font-weight: bold;
+        }
+        test-one p:nth-of-type(3){
+            color: red;
+        }
+    </style>
+    <p>I should appear first in the element</p>
+    <content select="p"></content>
+    <p>I should appear third in the element</p>
+    <content select="#second"></content>
+    <p><content select=".fourth"></content></p>
+    <p>I should appear fifth in the element</p>
+</template>
+<script>
+    Tevatron({
+        name: 'test-one',
+        /* tevatron template: #test-one-template */
+    });
+</script>
+
+<template id="test-three-template">
+    <span class="hello">Hello, world</span>
+</template>
+<script>
+    Tevatron({
+        name: 'test-three-base',
+        /* tevatron template: #test-three-template */
+        createdCallback: function(){
+            this.style.color = 'red';
+        },
+        testFunction1: function(){
+            return 8;
+        },
+        testProperty1: 10
+    });
+    Tevatron({
+        name: 'test-three',
+        extends: 'test-three-base',
+        attachedCallback: function(){
+            this.testProperty1 = this.getOriginalProperty('testProperty1') + 2;
+        },
+        testFunction1: function(){
+            return this.callOriginalFunction('testFunction1') + 2;
+        }
+    });
+</script>
+
+<template id="test-four-template">
+    <content select='h4'></content>
+    <p>This should appear second</p>
+    <content select='.third'></content>
+</template>
+<script>
+    Tevatron({
+        name: 'test-four',
+        /* tevatron template: #test-four-template */
+        attachedCallback: function(){
+            setTimeout(function(){
+                this.resetInnerHTML(this.originalInnerHTML + "<p class='third'>This should appear third</p>");
+            }.bind(this), 5);
+        }
+    });
+</script>

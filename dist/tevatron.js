@@ -497,6 +497,7 @@ exports['default'] = function (prototype) {
         var extendsElementName = prototype['extends'] || '';
         extendsElementName = extendsElementName.toUpperCase();
 
+        /* global HTMLTemplateElement */
         // Check to see if the template argument is a Template node, or if it's
         // an object from the builder script
         if (prototype.template && prototype.template instanceof HTMLTemplateElement) {
