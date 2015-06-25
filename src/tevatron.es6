@@ -1,5 +1,5 @@
 /*!
- * Tevatron v0.1.4
+ * Tevatron v0.1.5
  * by Fast Company
  *
  * Copyright 2015 Mansueto Ventures, LLC and other contributors
@@ -22,10 +22,10 @@ export default prototype => {
 
         // By the time this element is registered, prototype.extends should only ever refer to
         // a non-custom element
-        if (this.tevatronElements && this.tevatronElements.hasOwnProperty(extendsElementName)){
+        if (window.tevatronElements && window.tevatronElements.hasOwnProperty(extendsElementName)){
             // If this element is extending a Tevatron element, grab that element's prototype
             // and clear prototype.extends
-            newPrototype = createElementPrototype(prototype.template, prototype.createdCallback, this.tevatronElements[extendsElementName]);
+            newPrototype = createElementPrototype(prototype.template, prototype.createdCallback, window.tevatronElements[extendsElementName]);
             prototype.extends = '';
         } else if (extendsElementName.indexOf('-') > -1){
             // If this element is trying to extend a custom element not registered with
@@ -47,7 +47,7 @@ export default prototype => {
     }
 
     // Convert a template node into html/css objects
-    var templateNodeToTemplateObj = node => {
+    function templateNodeToTemplateObj(node){
         var obj = {};
         var htmlString = node.innerHTML;
 
@@ -71,7 +71,7 @@ export default prototype => {
     };
 
     // Create the element prototype
-    var createElementPrototype = (template, createdCallback, extendsElement) => {
+    function createElementPrototype(template, createdCallback, extendsElement){
         var baseElement = extendsElement || HTMLElement;
         var ElementPrototype = Object.create(baseElement.prototype);
 
@@ -135,13 +135,13 @@ export default prototype => {
     };
 
     // Register a custom element with the document
-    var registerElement = (elementPrototype, name, extendsElement) => {
+    function registerElement(elementPrototype, name, extendsElement){
         // Make sure the tevatron element registry exists
-        if (!this.tevatronElements) {
-            this.tevatronElements = {};
+        if (!window.tevatronElements) {
+            window.tevatronElements = {};
         }
         // If this element isn't already registered, register it
-        if (!this.tevatronElements[name.toUpperCase()]){
+        if (!window.tevatronElements[name.toUpperCase()]){
             // If this element is extending a non-custom element
             if (typeof extendsElement === 'string' && extendsElement !== '') {
                 document.registerElement(name.toUpperCase(), {
@@ -149,7 +149,7 @@ export default prototype => {
                     extends: extendsElement
                 });
             } else {
-                this.tevatronElements[name.toUpperCase()] = document.registerElement(name.toUpperCase(), {
+                window.tevatronElements[name.toUpperCase()] = document.registerElement(name.toUpperCase(), {
                     prototype: elementPrototype
                 });
             }
@@ -158,7 +158,7 @@ export default prototype => {
 
     // Register a custom element's internal style tags by placing them
     // at the top of the <head>
-    var registerStyle = (styleString, name) => {
+    function registerStyle(styleString, name){
         var styleTag = document.getElementById(`#tevatron-styles-${name}`);
         if (styleTag === null){
             styleTag = document.createElement('style');
@@ -169,7 +169,7 @@ export default prototype => {
     };
 
     // Resolve a custom element's template by imitating Shadow DOM insertion points
-    var collideHTML = (template, element, force) => {
+    function collideHTML(template, element, force){
         var uncollided = element.getAttribute('data-tevatron') !== 'collided';
         if (uncollided){
             element.originalInnerHTML = element.innerHTML;
