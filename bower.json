@@ -1,7 +1,7 @@
 {
   "name": "tevatron",
   "main": "src/tevatron.js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "authors": [
     "Fast Company <dev@fastcompany.com>",
     "Zacqary Adam Xeper <zxeper@fastcompany.com>"
