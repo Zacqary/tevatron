@@ -38,7 +38,9 @@ exec('[[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]] && echo "*"', 
 		yesno.ask('Commit and push this change to git repo? Y/n', true, function(ok){
 			if (ok){
 				var newPreamble = fs.readFileSync('src/minified-preamble.txt').toString().replace(oldVersion, newVersion);
+				var newES6 = fs.readFileSync('src/tevatron.es6').toString().replace(oldVersion, newVersion);
 				fs.writeFileSync('src/minified-preamble.txt', newPreamble);
+				fs.writeFileSync('src/tevatron.es6', newES6);
 				fs.writeFileSync('package.json', JSON.stringify(npmPackage, null, 2));
 				fs.writeFileSync('bower.json', JSON.stringify(bowerPackage, null, 2));
 				exec('npm run build', function(){
