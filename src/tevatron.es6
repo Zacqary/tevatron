@@ -40,8 +40,6 @@ export default prototype => {
         if (prototype.template && typeof prototype.template.css === 'string'){
             registerStyle(prototype.template.css, prototype.name);
         }
-        // Add all properties into the prototype
-        Object.assign(newPrototype, prototype);
 
         // Register the prototype as a custom element
         registerElement(newPrototype, prototype.name, prototype.extends);
@@ -75,17 +73,17 @@ export default prototype => {
     function createElementPrototype(template, createdCallback, extendsElement){
         var baseElement = extendsElement || HTMLElement;
         var ElementPrototype = Object.create(baseElement.prototype);
-
-        // Add an immutable property to the ElementPrototype
+        // Function to add an immutable property to the ElementPrototype
         function addConstant(name, value){
             Object.defineProperty(ElementPrototype, name, {
-                get: function(){
-                    return value;
-                },
+                value: value,
                 enumerable: 'true'
             });
         }
 
+        // Add all properties into the prototype
+        Object.assign(ElementPrototype, prototype);
+        
         if (typeof template === 'function'){
             createdCallback = template;
         }
@@ -95,7 +93,7 @@ export default prototype => {
 
         // Set this element's createdCallback to resolve the element's template,
         // and then call its canonical createdCallback
-        addConstant('createdCallback', function(){
+        ElementPrototype.createdCallback = function(){
             // Collide this element's template, or, if it has no template,
             // its base element's template
             if (template && typeof template.html === 'string'){
@@ -110,8 +108,8 @@ export default prototype => {
             } else if (extendsElement && extendsElement.prototype.canonicalCreatedCallback){
                 extendsElement.prototype.canonicalCreatedCallback.call(this);
             }
-        });
-
+        };
+        
         // Reset this element's innerHTML and recollide it with its template
         addConstant('resetInnerHTML', function(newHTML){
             this.innerHTML = newHTML;

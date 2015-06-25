@@ -477,13 +477,13 @@ Iterators.NodeList = Iterators.HTMLCollection = ArrayValues;
  */
 'use strict';
 
-var _Object$assign = require('babel-runtime/core-js/object/assign')['default'];
-
 var _getIterator = require('babel-runtime/core-js/get-iterator')['default'];
 
 var _Object$create = require('babel-runtime/core-js/object/create')['default'];
 
 var _Object$defineProperty = require('babel-runtime/core-js/object/define-property')['default'];
+
+var _Object$assign = require('babel-runtime/core-js/object/assign')['default'];
 
 Object.defineProperty(exports, '__esModule', {
     value: true
@@ -523,8 +523,6 @@ exports['default'] = function (prototype) {
         if (prototype.template && typeof prototype.template.css === 'string') {
             registerStyle(prototype.template.css, prototype.name);
         }
-        // Add all properties into the prototype
-        _Object$assign(newPrototype, prototype);
 
         // Register the prototype as a custom element
         registerElement(newPrototype, prototype.name, prototype['extends']);
@@ -579,16 +577,16 @@ exports['default'] = function (prototype) {
     function createElementPrototype(template, createdCallback, extendsElement) {
         var baseElement = extendsElement || HTMLElement;
         var ElementPrototype = _Object$create(baseElement.prototype);
-
-        // Add an immutable property to the ElementPrototype
+        // Function to add an immutable property to the ElementPrototype
         function addConstant(name, value) {
             _Object$defineProperty(ElementPrototype, name, {
-                get: function get() {
-                    return value;
-                },
+                value: value,
                 enumerable: 'true'
             });
         }
+
+        // Add all properties into the prototype
+        _Object$assign(ElementPrototype, prototype);
 
         if (typeof template === 'function') {
             createdCallback = template;
@@ -599,7 +597,7 @@ exports['default'] = function (prototype) {
 
         // Set this element's createdCallback to resolve the element's template,
         // and then call its canonical createdCallback
-        addConstant('createdCallback', function () {
+        ElementPrototype.createdCallback = function () {
             // Collide this element's template, or, if it has no template,
             // its base element's template
             if (template && typeof template.html === 'string') {
@@ -614,7 +612,7 @@ exports['default'] = function (prototype) {
             } else if (extendsElement && extendsElement.prototype.canonicalCreatedCallback) {
                 extendsElement.prototype.canonicalCreatedCallback.call(this);
             }
-        });
+        };
 
         // Reset this element's innerHTML and recollide it with its template
         addConstant('resetInnerHTML', function (newHTML) {
