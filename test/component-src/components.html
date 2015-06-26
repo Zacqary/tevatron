@@ -38,7 +38,7 @@
     });
     Tevatron({
         name: 'test-three',
-        extends: 'test-three-base',
+        inherits: 'test-three-base',
         attachedCallback: function(){
             this.testProperty1 = this.getOriginalProperty('testProperty1') + 2;
         },
@@ -49,14 +49,43 @@
 </script>
 
 <template id="test-four-template">
+    <content select='.img1'></content>
+</template>
+<script>
+    Tevatron({
+        name: 'test-four',
+        /* tevatron template: #test-four-template */
+        extends: 'canvas',
+        attachedCallback: function(){
+            var ctx = this.getContext('2d');
+            this.height = 200;
+            this.width = 200;
+            ctx.clearRect(0,0,200,200);
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0,0,100,100);
+            ctx.fillStyle = 'red';
+            ctx.fillRect(100,0,100,100);
+            ctx.fillStyle = 'black';
+            ctx.fillRect(100,100,100,100);
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0,100,100,100);
+            var imgs = this.querySelectorAll('img');
+            for (var i =0; i < imgs.length; i++){
+                ctx.drawImage(imgs[i], 37.5,37.5,125,125);
+            }
+        }
+    });
+</script>
+
+<template id="test-five-template">
     <content select='h4'></content>
     <p>This should appear second</p>
     <content select='.third'></content>
 </template>
 <script>
     Tevatron({
-        name: 'test-four',
-        /* tevatron template: #test-four-template */
+        name: 'test-five',
+        /* tevatron template: #test-five-template */
         attachedCallback: function(){
             setTimeout(function(){
                 this.resetInnerHTML(this.originalInnerHTML + "<p class='third'>This should appear third</p>");

@@ -491,12 +491,6 @@ Object.defineProperty(exports, '__esModule', {
 
 exports['default'] = function (prototype) {
     if (prototype) {
-        // Create a prototype
-        var newPrototype;
-        // Handle any element extensions
-        var extendsElementName = prototype['extends'] || '';
-        extendsElementName = extendsElementName.toUpperCase();
-
         /* global HTMLTemplateElement */
         // Check to see if the template argument is a Template node, or if it's
         // an object from the builder script
@@ -504,20 +498,13 @@ exports['default'] = function (prototype) {
             prototype.template = templateNodeToTemplateObj(prototype.template);
         }
 
-        // By the time this element is registered, prototype.extends should only ever refer to
-        // a non-custom element
-        if (window.tevatronElements && window.tevatronElements.hasOwnProperty(extendsElementName)) {
-            // If this element is extending a Tevatron element, grab that element's prototype
-            // and clear prototype.extends
-            newPrototype = createElementPrototype(prototype.template, prototype.createdCallback, window.tevatronElements[extendsElementName]);
-            prototype['extends'] = '';
-        } else if (extendsElementName.indexOf('-') > -1) {
-            // If this element is trying to extend a custom element not registered with
-            // Tevatron, don't let it
-            prototype['extends'] = '';
-        } else {
-            newPrototype = createElementPrototype(prototype.template, prototype.createdCallback);
+        // If this element is extending a built-in element, make sure it inherits the correct prototype
+        if (prototype['extends'] && !prototype.inherits) {
+            prototype.inherits = prototype['extends'];
         }
+
+        // Create the element's new prototype
+        var newPrototype = createElementPrototype(prototype.template, prototype.createdCallback, prototype.inherits);
 
         // If there's any CSS in the template, register it
         if (prototype.template && typeof prototype.template.css === 'string') {
@@ -574,9 +561,12 @@ exports['default'] = function (prototype) {
     };
 
     // Create the element prototype
-    function createElementPrototype(template, createdCallback, extendsElement) {
-        var baseElement = extendsElement || HTMLElement;
-        var ElementPrototype = _Object$create(baseElement.prototype);
+    function createElementPrototype(template, createdCallback, inherits) {
+        var basePrototype = HTMLElement.prototype;
+        if (inherits) {
+            basePrototype = Object.getPrototypeOf(document.createElement(inherits));
+        }
+        var ElementPrototype = _Object$create(basePrototype);
         // Function to add an immutable property to the ElementPrototype
         function addConstant(name, value) {
             _Object$defineProperty(ElementPrototype, name, {
@@ -602,15 +592,15 @@ exports['default'] = function (prototype) {
             // its base element's template
             if (template && typeof template.html === 'string') {
                 collideHTML(template.html, this);
-            } else if (extendsElement && extendsElement.prototype.template) {
-                collideHTML(extendsElement.prototype.template.html, this);
+            } else if (inherits && basePrototype.template) {
+                collideHTML(basePrototype.template.html, this);
             }
             // Call this element's createdCallback, or, if it has none,
             // its base element's createdCallback
             if (typeof createdCallback === 'function') {
                 createdCallback.call(this);
-            } else if (extendsElement && extendsElement.prototype.canonicalCreatedCallback) {
-                extendsElement.prototype.canonicalCreatedCallback.call(this);
+            } else if (inherits && basePrototype.canonicalCreatedCallback) {
+                basePrototype.canonicalCreatedCallback.call(this);
             }
         };
 
@@ -622,14 +612,14 @@ exports['default'] = function (prototype) {
             }
         });
 
-        // If this element extends another element, add these methods
+        // If this element inherits another element, add these methods
         // to refer to the base element's original functions and properties
-        if (extendsElement) {
+        if (inherits) {
             addConstant('callOriginalFunction', function (method) {
-                return baseElement.prototype[method].call(this);
+                return basePrototype[method].call(this);
             });
             addConstant('getOriginalProperty', function (property) {
-                return baseElement.prototype[property];
+                return basePrototype[property];
             });
         }
 

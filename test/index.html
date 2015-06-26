@@ -44,7 +44,7 @@
 				});
 			});
 			
-			describe("An extended element based on a custom element", function(){
+			describe("An element that inherits a custom element", function(){
 				it("should have the same template as its base", function(){
 					var expected = document.getElementById('expected-test-three').innerHTML.replace(/\n(\s+)?/g, '');
 					var result = document.querySelector('test-three').innerHTML.replace(/\n(\s+)?/g, '');
@@ -62,14 +62,22 @@
 					expect(document.querySelector('test-three').testProperty1).toEqual(12);
 				});
 			});
+
+			describe("An element that extends a built-in element", function(){
+				it("should have the same behavior as its base", function(){
+					var expected = document.getElementById('expected-test-four').style.backgroundImage.replace('url("','').replace('")','');
+					var result = document.querySelector('[is=test-four]').toDataURL();
+					expect(result).toEqual(expected);
+				});
+			});
 			
 			describe("An element that's recollided after being inserted", function(){
 				beforeEach(function(done){
 					setTimeout(done, 5);
 				});
 				it("should apply its existing template to its reset innerHTML", function(){
-					var expected = document.getElementById('expected-test-four').innerHTML.replace(/\n(\s+)?/g, '');
-					var result = document.querySelector('test-four').innerHTML.replace(/\n(\s+)?/g, '');
+					var expected = document.getElementById('expected-test-five').innerHTML.replace(/\n(\s+)?/g, '');
+					var result = document.querySelector('test-five').innerHTML.replace(/\n(\s+)?/g, '');
 					expect(result).toEqual(expected);	
 				});
 			});
@@ -163,7 +171,7 @@
 				</template>
 			</div>
 			
-			<h1>Extended Custom Element</h1>
+			<h1>Extended and Inherited Elements</h1>
 			<h2>Test 3</h2>
 			<div class='test'>
 				<section class='test-section'>
@@ -177,13 +185,27 @@
 					<test-three></test-three>
 				</section>
 			</div>
-			
-			<h1>Recollided Element</h1>
 			<h2>Test 4</h2>
 			<div class='test'>
 				<section class='test-section'>
 					<h3>Expected</h3>
-					<div id='expected-test-four'>
+					<div id='expected-test-four' style='background: url("data:image/png;base64,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"); width: 200px; height: 200px'></div>
+				</section>
+				<section class='test-section'>
+					<h3>Result</h3>
+					<canvas is='test-four'>
+						<img src='lib/happy.png' class='img1'>
+						<img src='lib/sad.png' class='img2'>
+					</canvas>
+				</section>
+			</div>
+			
+			<h1>Recollided Element</h1>
+			<h2>Test 5</h2>
+			<div class='test'>
+				<section class='test-section'>
+					<h3>Expected</h3>
+					<div id='expected-test-five'>
 						<h4>This should appear first</h4>
 						<p>This should appear second</p>
 						<p class='third'>This should appear third</p>
@@ -191,9 +213,9 @@
 				</section>
 				<section class='test-section'>
 					<h3>Result</h3>
-					<test-four>
+					<test-five>
 						<h4>This should appear first</h4>
-					</test-four>
+					</test-five>
 				</section>
 			</div>
 			
