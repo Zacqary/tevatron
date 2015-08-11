@@ -1,33 +1,21 @@
-<template id="test-one-template">
-    <style>
-        test-one .fourth{
-            font-weight: bold;
-        }
-        test-one p:nth-of-type(3){
-            color: red;
-        }
-    </style>
-    <p>I should appear first in the element</p>
-    <content select="p"></content>
-    <p>I should appear third in the element</p>
-    <content select="#second"></content>
-    <p><content select=".fourth"></content></p>
-    <p>I should appear fifth in the element</p>
-</template>
-<script>
+var exports = { _asArray: [], all() { return this._asArray; } };
+let Tevatron = prototype => { exports[prototype.name] = prototype; exports._asArray.push(prototype); };
+// =========================
+// test/src/components/components.html-inline
+// =========================
+// === script tag 0 ===
     Tevatron({
         name: 'test-one',
-        /* tevatron template: #test-one-template */
+        template: {html: '<p>I should appear first in the element</p><content select="p"></content><p>I should appear third in the element</p><content select="#second"></content><p><content select=".fourth"></content></p><p>I should appear fifth in the element</p>', css: 'test-one .fourth{font-weight: bold;}test-one p:nth-of-type(3){color: red;}'},
     });
-</script>
 
-<template id="test-three-template">
-    <span class="hello">Hello, world</span>
-</template>
-<script>
-    Tevatron([{
+// =========================
+// test/src/components/components.html-inline
+// =========================
+// === script tag 1 ===
+    Tevatron({
         name: 'test-three-base',
-        /* tevatron template: #test-three-template */
+        template: {html: '<span class="hello">Hello, world</span>'},
         createdCallback: function(){
             this.style.color = 'red';
         },
@@ -35,7 +23,8 @@
             return 8;
         },
         testProperty1: 10
-    }, {
+    });
+    Tevatron({
         name: 'test-three',
         inherits: 'test-three-base',
         attachedCallback: function(){
@@ -44,17 +33,16 @@
         testFunction1: function(){
             return this.callOriginalFunction('testFunction1') + 2;
         }
-    }]);
-</script>
+    });
 
-<template id="test-four-template">
-    <content select='.img1'></content>
-</template>
-<script>
+// =========================
+// test/src/components/components.html-inline
+// =========================
+// === script tag 2 ===
     Tevatron({
         name: 'test-four',
-        /* tevatron template: #test-four-template */
-        inherits: 'canvas',
+        template: {html: '<content select=".img1"></content>'},
+        extends: 'canvas',
         attachedCallback: function(){
             var ctx = this.getContext('2d');
             this.height = 200;
@@ -74,21 +62,19 @@
             }
         }
     });
-</script>
 
-<template id="test-five-template">
-    <content select='h4'></content>
-    <p>This should appear second</p>
-    <content select='.third'></content>
-</template>
-<script>
+// =========================
+// test/src/components/components.html-inline
+// =========================
+// === script tag 3 ===
     Tevatron({
         name: 'test-five',
-        /* tevatron template: #test-five-template */
+        template: {html: '<content select="h4"></content><p>This should appear second</p><content select=".third"></content>'},
         attachedCallback: function(){
             setTimeout(function(){
                 this.resetInnerHTML(this.originalInnerHTML + "<p class='third'>This should appear third</p>");
             }.bind(this), 5);
         }
     });
-</script>
+
+export default exports;

@@ -191,7 +191,7 @@ var tevatronRegisterElement = function tevatronRegisterElement(prototype) {
         if (styleTag === null) {
             styleTag = document.createElement('style');
             styleTag.id = '#tevatron-styles-' + name;
-            document.head.appendChild(styleTag);
+            document.head.insertBefore(styleTag, document.head.childNodes[0]);
         }
         styleTag.innerHTML += styleString;
     }

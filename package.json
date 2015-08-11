@@ -4,7 +4,9 @@
   "description": "Lightweight custom elements library",
   "main": "dist/tevatron.js",
   "scripts": {
-    "pretest": "$(npm bin)/tevatron -s test/component-src -t test/component-dist/components -cm",
+    "build:testcomponents": "node ../tevatron-cli/tevatron-build.js -s test/src/components -t test/dist/components -cx",
+    "build:testapp": "$(npm bin)/browserify test/src/app.js -o test/dist/app.js -t babelify",
+    "pretest": "npm run build:testcomponents && npm run build:testapp",
     "test": "$(npm bin)/live-server --open=test",
     "build": "$(npm bin)/browserify src/tevatron.js -o dist/tevatron.js -t babelify -s Tevatron",
     "postbuild": "$(npm bin)/uglifyjs dist/tevatron.js -m -o dist/tevatron.min.js --preamble \"$(cat src/minified-preamble.txt)\" --source-map dist/tevatron.js.map --source-map-root dist/tevatron.js ",
@@ -25,6 +27,7 @@
     "babelify": "^6.1.2",
     "browserify": "^10.2.4",
     "colors": "^1.1.2",
+    "document-register-element": "^0.4.5",
     "eslint": "^0.23.0",
     "live-server": "^0.7.1",
     "semver": "^4.3.6",
