@@ -6,7 +6,19 @@
  * Released under the MIT license
  *
  */
-export default prototype => {
+
+Object.assign = Object.assign || function(target, src) {
+    for (let i in src) {
+        target[i] = src[i];
+    }
+};
+
+let tevatronRegisterElement = prototype => {
+    if (Array.isArray(prototype)) {
+        prototype.forEach(tevatronRegisterElement);
+        return;
+    }
+
     if (prototype){
         /* global HTMLTemplateElement */
         // Check to see if the template argument is a Template node, or if it's
@@ -208,4 +220,11 @@ export default prototype => {
             element.setAttribute('data-tevatron', 'collided');
         }
     }
+};
+
+export default prototypes => {
+    if (!Array.isArray(prototypes)) {
+        prototypes = [prototypes];
+    }
+    prototypes.forEach(tevatronRegisterElement);
 };

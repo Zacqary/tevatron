@@ -4,10 +4,10 @@
   "description": "Lightweight custom elements library",
   "main": "dist/tevatron.js",
   "scripts": {
-    "pretest": "./node_modules/.bin/tevatron -s test/component-src -t test/component-dist/components -cm",
-    "test": "./node_modules/.bin/live-server --open=test",
-    "build": "./node_modules/.bin/browserify src/tevatron.es6 -o dist/tevatron.js -t [ babelify --optional runtime ] -s Tevatron",
-    "postbuild": "./node_modules/.bin/uglifyjs dist/tevatron.js -m -o dist/tevatron.min.js --preamble \"$(cat src/minified-preamble.txt)\" --source-map dist/tevatron.js.map --source-map-root dist/tevatron.js ",
+    "pretest": "$(npm bin)/tevatron -s test/component-src -t test/component-dist/components -cm",
+    "test": "$(npm bin)/live-server --open=test",
+    "build": "$(npm bin)/browserify src/tevatron.js -o dist/tevatron.js -t babelify -s Tevatron",
+    "postbuild": "$(npm bin)/uglifyjs dist/tevatron.js -m -o dist/tevatron.min.js --preamble \"$(cat src/minified-preamble.txt)\" --source-map dist/tevatron.js.map --source-map-root dist/tevatron.js ",
     "release": "node bump"
   },
   "author": "Fast Company <dev@fastcompany.com>",

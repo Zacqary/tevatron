@@ -25,7 +25,7 @@
     <span class="hello">Hello, world</span>
 </template>
 <script>
-    Tevatron({
+    Tevatron([{
         name: 'test-three-base',
         /* tevatron template: #test-three-template */
         createdCallback: function(){
@@ -35,8 +35,7 @@
             return 8;
         },
         testProperty1: 10
-    });
-    Tevatron({
+    }, {
         name: 'test-three',
         inherits: 'test-three-base',
         attachedCallback: function(){
@@ -45,7 +44,7 @@
         testFunction1: function(){
             return this.callOriginalFunction('testFunction1') + 2;
         }
-    });
+    }]);
 </script>
 
 <template id="test-four-template">
