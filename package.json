@@ -1,6 +1,6 @@
 {
   "name": "tevatron",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Lightweight custom elements library",
   "main": "dist/tevatron.js",
   "scripts": {
